@@ -93,6 +93,7 @@ class PureHttp {
         const $config = response.config;
         // 关闭进度条动画
         NProgress.done();
+        // 判断响应头中是否含又access_token, 有的话放入token
         // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
         if (typeof $config.beforeResponseCallback === "function") {
           $config.beforeResponseCallback(response);

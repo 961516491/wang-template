@@ -6,15 +6,15 @@ import phone from "./components/phone.vue";
 import qrCode from "./components/qrCode.vue";
 import regist from "./components/regist.vue";
 import update from "./components/update.vue";
-import { initRouter } from "/@/router/utils";
+// import { initRouter } from "/@/router/utils";
 import { message } from "@pureadmin/components";
 import type { FormInstance } from "element-plus";
-import { storageSession } from "/@/utils/storage";
+// import { storageSession } from "/@/utils/storage";
 import { ref, reactive, watch, computed } from "vue";
 import { operates, thirdParty } from "./utils/enums";
 import { useUserStoreHook } from "/@/store/modules/user";
 import { bg, avatar, currentWeek } from "./utils/static";
-import { ReImageVerify } from "/@/components/ReImageVerify";
+import SeedCaptcha from "/@/components/SeedCaptcha/index.vue";
 import { useRenderIcon } from "/@/components/ReIcon/src/hooks";
 
 const imgCode = ref("");
@@ -28,8 +28,9 @@ const currentPage = computed(() => {
 
 const ruleForm = reactive({
   username: "admin",
-  password: "admin123",
-  verifyCode: ""
+  password: "123456",
+  code: "",
+  cvc: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -38,16 +39,23 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       // 模拟请求，需根据实际开发进行修改
-      setTimeout(() => {
-        loading.value = false;
-        storageSession.setItem("info", {
-          username: "admin",
-          accessToken: "eyJhbGciOiJIUzUxMiJ9.test"
+      // setTimeout(() => {
+      //   loading.value = false;
+      //   storageSession.setItem("info", {
+      //     username: "admin",
+      //     accessToken: "eyJhbGciOiJIUzUxMiJ9.test"
+      //   });
+      //   initRouter("admin").then(() => {});
+      //   message.success("登陆成功");
+      //   router.push("/");
+      // }, 2000);
+      useUserStoreHook()
+        .loginByUsername(ruleForm)
+        .then(() => {
+          loading.value = false;
+          message.success("登陆成功");
+          router.push("/");
         });
-        initRouter("admin").then(() => {});
-        message.success("登陆成功");
-        router.push("/");
-      }, 2000);
     } else {
       loading.value = false;
       return fields;
@@ -74,7 +82,7 @@ watch(imgCode, value => {
       <div class="login-form">
         <avatar class="avatar" />
         <Motion>
-          <h2>Pure Admin</h2>
+          <h2>Seed Admin</h2>
         </Motion>
 
         <el-form
@@ -109,14 +117,10 @@ watch(imgCode, value => {
           </Motion>
 
           <Motion :delay="200">
-            <el-form-item prop="verifyCode">
-              <el-input
-                clearable
-                v-model="ruleForm.verifyCode"
-                placeholder="验证码"
-              >
+            <el-form-item prop="code">
+              <el-input clearable v-model="ruleForm.code" placeholder="验证码">
                 <template v-slot:append>
-                  <ReImageVerify v-model:code="imgCode" />
+                  <SeedCaptcha v-model:cvc="ruleForm.cvc" />
                 </template>
               </el-input>
             </el-form-item>

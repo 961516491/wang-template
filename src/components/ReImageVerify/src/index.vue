@@ -5,8 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { watch, onMounted } from "vue";
-import { getVerify } from "/@/api/user";
+import { watch } from "vue";
 import { useImageVerify } from "./hooks";
 
 interface Props {
@@ -24,16 +23,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emits>();
 
 const { domRef, imgCode, setImgCode, getImgCode } = useImageVerify();
-
-/** 渲染验证码 */
-const refreshCode = () => {
-  getVerify().then(res => {
-    debugger;
-  });
-};
-onMounted(() => {
-  refreshCode();
-});
 
 watch(
   () => props.code,
