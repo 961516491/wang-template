@@ -9,7 +9,6 @@ import update from "./components/update.vue";
 // import { initRouter } from "/@/router/utils";
 import { message } from "@pureadmin/components";
 import type { FormInstance } from "element-plus";
-// import { storageSession } from "/@/utils/storage";
 import { ref, reactive, watch, computed } from "vue";
 import { operates, thirdParty } from "./utils/enums";
 import { useUserStoreHook } from "/@/store/modules/user";
@@ -29,7 +28,7 @@ const currentPage = computed(() => {
 const ruleForm = reactive({
   username: "admin",
   password: "123456",
-  code: "",
+  captcha: "",
   cvc: ""
 });
 
@@ -53,7 +52,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
         .loginByUsername(ruleForm)
         .then(() => {
           loading.value = false;
-          message.success("登陆成功");
+          message.success("登录成功");
           router.push("/");
         });
     } else {
@@ -118,7 +117,11 @@ watch(imgCode, value => {
 
           <Motion :delay="200">
             <el-form-item prop="code">
-              <el-input clearable v-model="ruleForm.code" placeholder="验证码">
+              <el-input
+                clearable
+                v-model="ruleForm.captcha"
+                placeholder="验证码"
+              >
                 <template v-slot:append>
                   <SeedCaptcha v-model:cvc="ruleForm.cvc" />
                 </template>

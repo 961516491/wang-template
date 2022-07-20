@@ -9,6 +9,12 @@ export type resultType = {
   accessToken?: string;
 };
 
+export type responseType = {
+  code: string;
+  data: object | string;
+  msg: string;
+};
+
 export type RequestMethods = Extract<
   Method,
   "get" | "post" | "put" | "delete" | "patch" | "option" | "head"

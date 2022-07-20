@@ -1,5 +1,4 @@
 import { http } from "../utils/http";
-
 interface userType extends Promise<any> {
   svg?: string;
   code?: number;
@@ -9,7 +8,7 @@ interface userType extends Promise<any> {
 interface LoginForm {
   username: string;
   password: string;
-  code: string;
+  captcha: string;
   cvc: string;
 }
 
@@ -20,7 +19,13 @@ export const getVerify = (): userType => {
 
 // 登录
 export const getLogin = (data: LoginForm) => {
-  return http.request("post", "/seed/sys/sign", { data });
+  // const data = qs.stringify(data1);
+  return http.request("post", "/seed/sys/sign", {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    data: data
+  });
 };
 
 // 刷新token

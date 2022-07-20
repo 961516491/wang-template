@@ -13,7 +13,7 @@ export const REGEXP_PWD =
 const loginRules = reactive(<FormRules>{
   username: [{ required: true, message: "请输入账号", trigger: "blur" }],
   password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+  captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }]
   // password: [
   //   {
   //     validator: (rule, value, callback) => {

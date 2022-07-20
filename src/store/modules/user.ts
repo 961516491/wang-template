@@ -6,6 +6,7 @@ import { storageSession } from "/@/utils/storage";
 import { getLogin, refreshToken } from "/@/api/user";
 import { getToken, setToken, removeToken } from "/@/utils/auth";
 import { useMultiTagsStoreHook } from "/@/store/modules/multiTags";
+import { responseType } from "/@/utils/http/types";
 
 const data = getToken();
 let token = "";
@@ -45,10 +46,9 @@ export const useUserStore = defineStore({
     async loginByUsername(data) {
       return new Promise<void>((resolve, reject) => {
         getLogin(data)
-          .then(data => {
-            debugger;
-            if (data) {
-              setToken(data);
+          .then((res: responseType) => {
+            if (res.data) {
+              setToken({ accessToken: res.data });
               resolve();
             }
           })

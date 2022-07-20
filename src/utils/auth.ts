@@ -18,7 +18,7 @@ export function getToken() {
 // 设置token以及过期时间（cookies、sessionStorage各一份）
 // 后端需要将用户信息和token以及过期时间都返回给前端，过期时间主要用于刷新token
 export function setToken(data) {
-  const { accessToken, expires, name } = data;
+  const { accessToken, expires = 1800000, name } = data;
   // 提取关键信息进行存储
   const paramsMap: paramsMapType = {
     name,
