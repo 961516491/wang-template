@@ -3,7 +3,7 @@ import { store } from "/@/store";
 import { userType } from "./types";
 import { router } from "/@/router";
 import { storageSession } from "/@/utils/storage";
-import { getLogin, refreshToken } from "/@/api/user";
+import { getLogin, getInfo, refreshToken } from "/@/api/user";
 import { getToken, setToken, removeToken } from "/@/utils/auth";
 import { useMultiTagsStoreHook } from "/@/store/modules/multiTags";
 import { responseType } from "/@/utils/http/types";
@@ -49,6 +49,11 @@ export const useUserStore = defineStore({
           .then((res: responseType) => {
             if (res.data) {
               setToken({ accessToken: res.data });
+              /** 登录成功， 获取用户信息 */
+              getInfo().then(res => {
+                // todo 将用户信息放入piana
+                storageSession.setItem("info", res.data);
+              });
               resolve();
             }
           })

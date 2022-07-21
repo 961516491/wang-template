@@ -6,7 +6,7 @@ import phone from "./components/phone.vue";
 import qrCode from "./components/qrCode.vue";
 import regist from "./components/regist.vue";
 import update from "./components/update.vue";
-// import { initRouter } from "/@/router/utils";
+import { initRouter } from "/@/router/utils";
 import { message } from "@pureadmin/components";
 import type { FormInstance } from "element-plus";
 import { ref, reactive, watch, computed } from "vue";
@@ -37,21 +37,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      // 模拟请求，需根据实际开发进行修改
-      // setTimeout(() => {
-      //   loading.value = false;
-      //   storageSession.setItem("info", {
-      //     username: "admin",
-      //     accessToken: "eyJhbGciOiJIUzUxMiJ9.test"
-      //   });
-      //   initRouter("admin").then(() => {});
-      //   message.success("登陆成功");
-      //   router.push("/");
-      // }, 2000);
       useUserStoreHook()
         .loginByUsername(ruleForm)
         .then(() => {
           loading.value = false;
+          initRouter().then(() => {});
           message.success("登录成功");
           router.push("/");
         });

@@ -11,7 +11,7 @@ export type resultType = {
 
 export type responseType = {
   code: string;
-  data: object | string;
+  data: any;
   msg: string;
 };
 

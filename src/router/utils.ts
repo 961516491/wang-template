@@ -114,13 +114,13 @@ function resetRouter(): void {
 }
 
 // 初始化路由
-function initRouter(name: string) {
+function initRouter() {
   return new Promise(resolve => {
-    getAsyncRoutes({ name }).then(({ info }) => {
-      if (info.length === 0) {
-        usePermissionStoreHook().changeSetting(info);
+    getAsyncRoutes().then(({ data }) => {
+      if (data.length === 0) {
+        usePermissionStoreHook().changeSetting(data);
       } else {
-        formatFlatteningRoutes(addAsyncRoutes(info)).map(
+        formatFlatteningRoutes(addAsyncRoutes(data)).map(
           (v: RouteRecordRaw) => {
             // 防止重复添加路由
             if (
@@ -143,7 +143,7 @@ function initRouter(name: string) {
             resolve(router);
           }
         );
-        usePermissionStoreHook().changeSetting(info);
+        usePermissionStoreHook().changeSetting(data);
       }
       router.addRoute({
         path: "/:pathMatch(.*)",
@@ -229,7 +229,7 @@ function addAsyncRoutes(arrRoutes: Array<RouteRecordRaw>) {
   if (!arrRoutes || !arrRoutes.length) return;
   const modulesRoutesKeys = Object.keys(modulesRoutes);
   arrRoutes.forEach((v: RouteRecordRaw) => {
-    if (v.redirect) {
+    if (v.redirect === "noRedirect") {
       v.component = Layout;
     } else if (v.meta?.frameSrc) {
       v.component = IFrame;

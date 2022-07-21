@@ -1,4 +1,5 @@
 import { http } from "../utils/http";
+import { responseType } from "/@/utils/http/types";
 interface userType extends Promise<any> {
   svg?: string;
   code?: number;
@@ -26,6 +27,11 @@ export const getLogin = (data: LoginForm) => {
     },
     data: data
   });
+};
+
+// 获取用户信息
+export const getInfo = (): Promise<responseType> => {
+  return http.request("get", "/seed/user/full");
 };
 
 // 刷新token
