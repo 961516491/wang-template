@@ -43,14 +43,14 @@ export const useUserStore = defineStore({
       this.currentPage = value;
     },
     // 登入
-    async loginByUsername(data) {
+    loginByUsername(data) {
       return new Promise<void>((resolve, reject) => {
         getLogin(data)
-          .then((res: responseType) => {
+          .then(async (res: responseType) => {
             if (res.data) {
               setToken({ accessToken: res.data });
               /** 登录成功， 获取用户信息 */
-              getInfo().then(res => {
+              await getInfo().then(res => {
                 // todo 将用户信息放入piana
                 storageSession.setItem("info", res.data);
               });
